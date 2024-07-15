@@ -1,14 +1,17 @@
 package com.transactionsexample.spring_transactions.repository_impl;
 
+import com.transactionsexample.spring_transactions.Utils;
 import com.transactionsexample.spring_transactions.dto.TransactionDTO;
 import com.transactionsexample.spring_transactions.model.Transaction;
 import com.transactionsexample.spring_transactions.repository.TransactionRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Repository
 public class TransactionRepositoryImpl implements TransactionRepository {
@@ -18,11 +21,10 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     @Override
     public void save(TransactionDTO transactionDTO) {
         Transaction transaction = new Transaction();
-        transaction.setId(transactionDTO.getId());
+        transaction.setId(Utils.generateRandomId());
         transaction.setAccountId(transactionDTO.getAccountId());
         transaction.setAmount(transactionDTO.getAmount());
-        transaction.setTimestamp(transactionDTO.getTimestamp());
-        // Add other fields as needed
+        transaction.setTimestamp(LocalDateTime.now());
         transactions.put(transaction.getId(), transaction);
     }
 

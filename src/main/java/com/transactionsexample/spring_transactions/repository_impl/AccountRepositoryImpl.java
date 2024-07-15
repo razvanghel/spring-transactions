@@ -1,5 +1,6 @@
 package com.transactionsexample.spring_transactions.repository_impl;
 
+import com.transactionsexample.spring_transactions.Utils;
 import com.transactionsexample.spring_transactions.dto.AccountRequestDTO;
 import com.transactionsexample.spring_transactions.dto.AccountResponseDTO;
 import com.transactionsexample.spring_transactions.model.Account;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Repository
 public class AccountRepositoryImpl implements AccountRepository {
@@ -19,10 +21,9 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public void save(AccountRequestDTO accountRequestDTO) {
         Account account = new Account();
-        account.setId(accountRequestDTO.getCustomerId());
+        account.setId(Utils.generateRandomId());
         account.setCustomerId(accountRequestDTO.getCustomerId());
         account.setBalance(accountRequestDTO.getBalance());
-        // Add other fields as needed
         accounts.put(account.getId(), account);
     }
 

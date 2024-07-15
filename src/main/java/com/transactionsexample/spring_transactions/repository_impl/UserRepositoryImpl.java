@@ -1,5 +1,6 @@
 package com.transactionsexample.spring_transactions.repository_impl;
 
+import com.transactionsexample.spring_transactions.Utils;
 import com.transactionsexample.spring_transactions.dto.UserDTO;
 import com.transactionsexample.spring_transactions.model.User;
 import com.transactionsexample.spring_transactions.repository.UserRepository;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -16,12 +18,13 @@ public class UserRepositoryImpl implements UserRepository {
     private final Map<Long, User> users = new HashMap<>();
 
     @Override
-    public void save(UserDTO userDTO) {
+    public UserDTO save(UserDTO userDTO) {
         User user = new User();
-        user.setId(userDTO.getId());
+        user.setId(Utils.generateRandomId());
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         users.put(user.getId(), user);
+        return convertToDTO(user);
     }
 
     @Override
