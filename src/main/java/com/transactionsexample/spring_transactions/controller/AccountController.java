@@ -4,6 +4,7 @@ import com.transactionsexample.spring_transactions.dto.AccountRequestDTO;
 import com.transactionsexample.spring_transactions.dto.AccountResponseDTO;
 import com.transactionsexample.spring_transactions.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,30 +20,37 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<Void> createAccount(@RequestBody AccountRequestDTO accountRequestDTO) {
         accountService.createAccount(accountRequestDTO);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AccountResponseDTO> getAccountById(@PathVariable Long id) {
         AccountResponseDTO account = accountService.getAccountById(id);
-        return ResponseEntity.ok(account);
+        if (account == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<List<AccountResponseDTO>> getAccountsByCustomerId(@PathVariable Long customerId) {
         List<AccountResponseDTO> accounts = accountService.getAccountsByCustomerId(customerId);
-        return ResponseEntity.ok(accounts);
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<AccountResponseDTO>> getAllAccounts() {
         List<AccountResponseDTO> accounts = accountService.getAllAccounts();
-        return ResponseEntity.ok(accounts);
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccountById(@PathVariable Long id) {
+        AccountResponseDTO account = accountService.getAccountById(id);
+        if(account == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         accountService.deleteAccountById(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

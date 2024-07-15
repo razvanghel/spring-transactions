@@ -48,7 +48,7 @@ public class TransactionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         transactionRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/account/{accountId}")
@@ -56,4 +56,5 @@ public class TransactionController {
         List<TransactionDTO> transactions = transactionRepository.findByAccountId(accountId);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
+
 }
