@@ -18,8 +18,7 @@ public class UserService {
     }
 
     public UserDTO createUser(UserDTO userDTO) {
-        userRepository.save(userDTO);
-        return userDTO;
+        return userRepository.save(userDTO);
     }
 
     public UserDTO getUserById(Long id) {
