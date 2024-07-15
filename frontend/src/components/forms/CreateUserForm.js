@@ -13,6 +13,8 @@ const CreateUserForm = ({ onUserCreated }) => {
                 });
                 if (response.status === 201) {
                     onUserCreated();
+                    setName('');
+                    setSurname('');
                 } else {
                     alert('Failed to create user');
                 }

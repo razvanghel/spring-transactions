@@ -14,6 +14,8 @@ const CreateTransactionForm = ({ onTransactionCreated }) => {
             });
             if (response.status === 201) {
                 onTransactionCreated();
+                setRecipientAccountId('');
+                setAmount('');
             } else {
                 alert('Failed to create transaction');
             }

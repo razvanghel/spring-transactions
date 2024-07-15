@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+
 const CreateAccountForm = ({ onAccountCreated }) => {
     const [userId, setUserId] = useState('');
     const [balance, setBalance] = useState(0);
@@ -22,6 +23,7 @@ const CreateAccountForm = ({ onAccountCreated }) => {
             alert('Failed to create account');
         }
     };
+
 
     return (
         <form onSubmit={handleSubmit}>
