@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import CreateUserForm from './components/forms/CreateUserForm';
 import UserList from './components/UserList';
 import CreateAccountForm from './components/forms/CreateAccountForm';
-import CreateTransactionForm from './components/forms/CreateTransactionForm';
+import DeleteForm from './components/forms/DeleteForm';
 const App = () => {
     const [refreshUsers, setRefreshUsers] = useState(false);
-    const [refreshAccounts, setRefreshAccounts] = useState(false);
     const [refreshTransactions, setRefreshTransactions] = useState(false);
 
     const handleUserCreated = () => {
@@ -13,28 +12,21 @@ const App = () => {
         setRefreshUsers(!refreshUsers); // Toggle the refresh state to trigger re-fetching the user list
     };
 
-    const handleAccountCreated = () => {
-        alert('Account created successfully');
-        setRefreshUsers(!refreshUsers);
-        setRefreshAccounts(!refreshAccounts); // Toggle the refresh state to trigger re-fetching the account list
-    };
-
-    const handleTransactionCreated = () => {
-        alert('Transaction created successfully');
-        setRefreshTransactions(!refreshTransactions); // Toggle the refresh state to trigger re-fetching the transactions list
+    const handleEntityDeleted = () => {
+        setRefreshUsers(!refreshUsers); // Refresh user list to reflect changes
     };
 
     return (
         <div>
-            <h1>Current Account Management</h1>
+            <h1>Create user form</h1>
             <CreateUserForm onUserCreated={handleUserCreated} />
             <p></p>
-            <CreateAccountForm onAccountCreated={handleAccountCreated} />
-            <p></p>
-            <CreateTransactionForm onTransactionCreated={handleTransactionCreated} />
-            <p></p>
+           <h2>Delete form</h2>
 
-             <UserList key={refreshUsers} />
+            <DeleteForm onEntityDeleted={handleEntityDeleted} />
+                        <p></p>
+
+            <UserList key={refreshUsers} />
             <hr />
         </div>
     );
