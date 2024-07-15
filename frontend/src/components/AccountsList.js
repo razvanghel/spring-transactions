@@ -1,13 +1,38 @@
 
 import React, { useState, useEffect } from 'react';
 import TransactionList from './TransactionList.js';
+import axios from 'axios';
 
-const AccountsList = ({ accounts }) => {
+import CreateTransactionForm from './forms/CreateTransactionForm';
+const AccountsList = ({ userId }) => {
+    const [accounts, setAccounts] = useState([]);
     const [selectedAccount, setSelectedAccount] = useState(null);
+        const [refreshTransactions, setRefreshTransactions] = useState(false);
+
+    const fetchAccounts = async (userId) => {
+        try {
+            const response = await axios.get(`/accounts/customer/${userId}`);
+            setAccounts(response.data);// Corrected the setter function
+        } catch (error) {
+            console.error('Error fetching user accounts:', error);
+        }
+    };
+
+    const handleTransactionCreated = () => {
+        alert('Transaction created successfully');
+        setRefreshTransactions(!refreshTransactions)
+    };
+
+    useEffect(() => {
+        fetchAccounts(userId);
+    }, [userId]);
 
     return (
            <div>
-               <h3>Accounts</h3>
+           <h2>Create transactions</h2>
+               <CreateTransactionForm onTransactionCreated={handleTransactionCreated} />
+
+               <h3>Accounts for User ID: {userId}</h3>
                {accounts.length > 0 ? (
                    <table>
                        <thead>
@@ -34,7 +59,9 @@ const AccountsList = ({ accounts }) => {
                ) : (
                    <p>No accounts found.</p>
                )}
-               {selectedAccount && <TransactionList accountId={selectedAccount} />}
+               {selectedAccount &&
+                    <TransactionList key={handleTransactionCreated} accountId={selectedAccount} />
+               }
            </div>
        );
 };

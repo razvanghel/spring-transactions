@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AccountsList from './AccountsList.js';
+import CreateAccountForm from './forms/CreateAccountForm';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
-    const [accounts, setAccounts] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [refreshAccounts, setRefreshAccounts] = useState(false);
 
+    const handleAccountCreated = () => {
+        alert('Account created successfully');
+        setRefreshAccounts(!refreshAccounts)
+    };
     const fetchUsers = async () => {
         try {
             const response = await axios.get('/users');
@@ -16,15 +21,6 @@ const UserList = () => {
         }
     };
 
-    const fetchUserAccounts = async (userId) => {
-        try {
-            const response = await axios.get(`/accounts/customer/${userId}`);
-            setAccounts(response.data);
-            setSelectedUser(userId);
-        } catch (error) {
-            console.error('Error fetching user accounts:', error);
-        }
-    };
 
     useEffect(() => {
         fetchUsers();
@@ -32,6 +28,9 @@ const UserList = () => {
 
         return (
             <div>
+                <h2>Create Account</h2>
+                <CreateAccountForm onAccountCreated={handleAccountCreated} />
+
                 <h2>Users List</h2>
                 {users.length > 0 ? (
                     <table>
@@ -50,7 +49,7 @@ const UserList = () => {
                                     <td>{user.name}</td>
                                     <td>{user.surname}</td>
                                     <td>
-                                        <button onClick={() => fetchUserAccounts(user.id)}>
+                                        <button onClick={() => setSelectedUser(user.id)}>
                                             Show Accounts
                                         </button>
                                     </td>
@@ -61,12 +60,10 @@ const UserList = () => {
                 ) : (
                     <p>No users found.</p>
                 )}
-                {selectedUser && (
-                <div>
-                    <h3>Accounts for User ID: {selectedUser}</h3>
-                     <AccountsList accounts={accounts} />
-                 </div>
-                )}
+                <p></p>
+                {selectedUser &&
+                     <AccountsList key={refreshAccounts} userId={selectedUser} />
+                }
             </div>
         );
 };

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const TransactionList = ({ accountId }) => {
+
     const [transactions, setTransactions] = useState([]);
+     const [selectedTransactions, setSelectedTransactions] = useState(null);
 
     const fetchAccountTransactions = async () => {
         try {
-            const response = await axios.get(`/transactions`);
+            const response = await axios.get(`/transactions/account/${accountId}`);
             setTransactions(response.data);
         } catch (error) {
             console.error('Error fetching account transactions:', error);
