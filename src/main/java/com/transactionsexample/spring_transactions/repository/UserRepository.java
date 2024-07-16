@@ -13,4 +13,6 @@ public interface UserRepository {
     List<UserDTO> findAll();
 
     void deleteById(Long id);
+
+    boolean existsById(Long id);
 }
