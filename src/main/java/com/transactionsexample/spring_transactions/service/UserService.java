@@ -15,15 +15,11 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private AccountService accountService;
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public UserDTO createUser(UserDTO userDTO) {
         userDTO.setId(Utils.generateRandomId());
