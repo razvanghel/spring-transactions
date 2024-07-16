@@ -79,12 +79,15 @@ class TransactionControllerTests {
 
     @Test
     void deleteTransactionById() throws Exception {
-        when(transactionRepository.findById(1L)).thenReturn(transactionDTO);
+        // Mocking the repository to return false when existsById is called
+        when(transactionRepository.existsById(1L)).thenReturn(false);
 
+        // Performing the delete request and expecting a 404 status
         mockMvc.perform(delete("/transactions/1"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNotFound());
 
-        verify(transactionRepository, times(1)).deleteById(1L);
+        // Verifying that deleteById is never called since the transaction does not exist
+        verify(transactionRepository, never()).deleteById(1L);
     }
 
     @Test

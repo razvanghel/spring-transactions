@@ -1,9 +1,9 @@
 package tests.service;
 
-import com.transactionsexample.spring_transactions.dto.AccountRequestDTO;
-import com.transactionsexample.spring_transactions.dto.AccountResponseDTO;
+import com.transactionsexample.spring_transactions.dto.AccountDTO;
 import com.transactionsexample.spring_transactions.repository_impl.AccountRepositoryImpl;
 import com.transactionsexample.spring_transactions.service.AccountService;
+import com.transactionsexample.spring_transactions.service.TransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +21,9 @@ class AccountServiceTests {
     @Mock
     private AccountRepositoryImpl accountRepository;
 
+    @Mock
+    private TransactionService transactionService;
+
     @InjectMocks
     private AccountService accountService;
 
@@ -31,10 +34,10 @@ class AccountServiceTests {
 
     @Test
     void createAccount() {
-        AccountRequestDTO accountRequestDTO = new AccountRequestDTO();
+        AccountDTO accountRequestDTO = new AccountDTO();
         accountRequestDTO.setCustomerId(1L);
         accountRequestDTO.setCustomerId(1L);
-        accountRequestDTO.setBalance(100.0);
+        accountRequestDTO.setBalance(0.0);
 
         accountService.createAccount(accountRequestDTO);
         verify(accountRepository, times(1)).save(accountRequestDTO);
@@ -42,58 +45,61 @@ class AccountServiceTests {
 
     @Test
     void getAccountById() {
-        AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
-        accountResponseDTO.setId(1L);
-        accountResponseDTO.setCustomerId(1L);
-        accountResponseDTO.setBalance(100.0);
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setId(1L);
+        accountDTO.setCustomerId(1L);
+        accountDTO.setBalance(0.0);
 
-        when(accountRepository.findById(1L)).thenReturn(accountResponseDTO);
+        when(accountRepository.findById(1L)).thenReturn(accountDTO);
 
-        AccountResponseDTO foundAccount = accountService.getAccountById(1L);
+        AccountDTO foundAccount = accountService.getAccountById(1L);
         assertNotNull(foundAccount);
-        assertEquals(100.0, foundAccount.getBalance());
+        assertEquals(0.0, foundAccount.getBalance());
         assertEquals(1L, foundAccount.getCustomerId());
     }
 
     @Test
     void getAccountsByCustomerId() {
-        AccountResponseDTO account1 = new AccountResponseDTO();
+        AccountDTO account1 = new AccountDTO();
         account1.setId(1L);
         account1.setCustomerId(1L);
         account1.setBalance(100.0);
 
-        AccountResponseDTO account2 = new AccountResponseDTO();
+        AccountDTO account2 = new AccountDTO();
         account2.setId(2L);
         account2.setCustomerId(1L);
         account2.setBalance(200.0);
 
         when(accountRepository.findByCustomerId(1L)).thenReturn(Arrays.asList(account1, account2));
 
-        List<AccountResponseDTO> accounts = accountService.getAccountsByCustomerId(1L);
+        List<AccountDTO> accounts = accountService.getAccountsByCustomerId(1L);
         assertEquals(2, accounts.size());
     }
 
     @Test
     void getAllAccounts() {
-        AccountResponseDTO account1 = new AccountResponseDTO();
+        AccountDTO account1 = new AccountDTO();
         account1.setId(1L);
         account1.setCustomerId(1L);
         account1.setBalance(100.0);
 
-        AccountResponseDTO account2 = new AccountResponseDTO();
+        AccountDTO account2 = new AccountDTO();
         account2.setId(2L);
         account2.setCustomerId(2L);
         account2.setBalance(200.0);
 
         when(accountRepository.findAll()).thenReturn(Arrays.asList(account1, account2));
 
-        List<AccountResponseDTO> accounts = accountService.getAllAccounts();
+        List<AccountDTO> accounts = accountService.getAllAccounts();
         assertEquals(2, accounts.size());
     }
 
     @Test
     void deleteAccountById() {
+        when(accountRepository.existsById(1L)).thenReturn(true);
+
         accountService.deleteAccountById(1L);
+
         verify(accountRepository, times(1)).deleteById(1L);
     }
 }

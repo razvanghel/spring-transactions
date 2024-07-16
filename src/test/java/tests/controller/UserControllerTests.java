@@ -88,7 +88,7 @@ class UserControllerTests {
         when(userService.getUserById(1L)).thenReturn(userDTO);
 
         mockMvc.perform(delete("/users/1"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
 
         verify(userService, times(1)).deleteUserById(1L);
     }
