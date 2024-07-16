@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public UserDTO save(UserDTO userDTO) {
         User user = new User();
-        user.setId(Utils.generateRandomId());
+        user.setId(userDTO.getId());
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         users.put(user.getId(), user);
@@ -48,6 +48,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void deleteById(Long id) {
         users.remove(id);
+    }
+
+    @Override
+    public boolean existsById(Long id){
+        return users.containsKey(id);
     }
 
     private UserDTO convertToDTO(User user) {

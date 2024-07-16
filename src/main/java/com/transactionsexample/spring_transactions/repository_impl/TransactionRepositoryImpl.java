@@ -21,7 +21,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     @Override
     public void save(TransactionDTO transactionDTO) {
         Transaction transaction = new Transaction();
-        transaction.setId(Utils.generateRandomId());
+        transaction.setId(transactionDTO.getId());
         transaction.setAccountId(transactionDTO.getAccountId());
         transaction.setAmount(transactionDTO.getAmount());
         transaction.setTimestamp(LocalDateTime.now());
@@ -49,6 +49,11 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     @Override
     public void deleteById(Long id) {
         transactions.remove(id);
+    }
+
+    @Override
+    public boolean existsById(Long id){
+        return transactions.containsKey(id);
     }
 
     @Override

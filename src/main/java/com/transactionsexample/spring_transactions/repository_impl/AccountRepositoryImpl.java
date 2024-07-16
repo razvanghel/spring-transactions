@@ -1,8 +1,7 @@
 package com.transactionsexample.spring_transactions.repository_impl;
 
 import com.transactionsexample.spring_transactions.Utils;
-import com.transactionsexample.spring_transactions.dto.AccountRequestDTO;
-import com.transactionsexample.spring_transactions.dto.AccountResponseDTO;
+import com.transactionsexample.spring_transactions.dto.AccountDTO;
 import com.transactionsexample.spring_transactions.model.Account;
 import com.transactionsexample.spring_transactions.repository.AccountRepository;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Repository
 public class AccountRepositoryImpl implements AccountRepository {
@@ -19,16 +17,17 @@ public class AccountRepositoryImpl implements AccountRepository {
     private final Map<Long, Account> accounts = new HashMap<>();
 
     @Override
-    public void save(AccountRequestDTO accountRequestDTO) {
+    public AccountDTO save(AccountDTO accountRequestDTO) {
         Account account = new Account();
-        account.setId(Utils.generateRandomId());
+        account.setId(accountRequestDTO.getId());
         account.setCustomerId(accountRequestDTO.getCustomerId());
         account.setBalance(accountRequestDTO.getBalance());
         accounts.put(account.getId(), account);
+        return convertToResponseDTO(account);
     }
 
     @Override
-    public AccountResponseDTO findById(Long id) {
+    public AccountDTO findById(Long id) {
         Account account = accounts.get(id);
         if (account == null) {
             return null;
@@ -37,8 +36,8 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public List<AccountResponseDTO> findByCustomerId(Long customerId) {
-        List<AccountResponseDTO> result = new ArrayList<>();
+    public List<AccountDTO> findByCustomerId(Long customerId) {
+        List<AccountDTO> result = new ArrayList<>();
         for (Account account : accounts.values()) {
             if (account.getCustomerId().equals(customerId)) {
                 result.add(convertToResponseDTO(account));
@@ -48,8 +47,8 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public List<AccountResponseDTO> findAll() {
-        List<AccountResponseDTO> result = new ArrayList<>();
+    public List<AccountDTO> findAll() {
+        List<AccountDTO> result = new ArrayList<>();
         for (Account account : accounts.values()) {
             result.add(convertToResponseDTO(account));
         }
@@ -61,8 +60,13 @@ public class AccountRepositoryImpl implements AccountRepository {
         accounts.remove(id);
     }
 
-    private AccountResponseDTO convertToResponseDTO(Account account) {
-        AccountResponseDTO responseDTO = new AccountResponseDTO();
+    @Override
+    public boolean existsById(Long id){
+        return accounts.containsKey(id);
+    }
+
+    private AccountDTO convertToResponseDTO(Account account) {
+        AccountDTO responseDTO = new AccountDTO();
         responseDTO.setId(account.getId());
         responseDTO.setCustomerId(account.getCustomerId());
         responseDTO.setBalance(account.getBalance());
