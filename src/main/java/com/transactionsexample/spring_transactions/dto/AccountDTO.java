@@ -1,19 +1,29 @@
 package com.transactionsexample.spring_transactions.dto;
 
-public class AccountRequestDTO {
+public class AccountDTO {
+    private Long id;
     private Long customerId;
     private Double balance;
 
     // Constructors, getters, setters, etc.
 
-    public AccountRequestDTO() {}
+    public AccountDTO() {}
 
-    public AccountRequestDTO(Long customerId, Double balance) {
+    public AccountDTO(Long id, Long customerId, Double balance) {
+        this.id = id;
         this.customerId = customerId;
         this.balance = balance;
     }
 
     // Getters and setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getCustomerId() {
         return customerId;
