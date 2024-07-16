@@ -7,7 +7,7 @@ public class UserDTO {
     private String surname;
     private Double balance;
     private Long id;
-    private List<AccountResponseDTO> accounts;
+    private List<AccountDTO> accounts;
 
     public void setId(Long id){
         this.id = id;
@@ -41,11 +41,11 @@ public class UserDTO {
         this.balance = balance;
     }
 
-    public List<AccountResponseDTO> getAccountsResponse() {
+    public List<AccountDTO> getAccountsResponse() {
         return accounts;
     }
 
-    public void setAccountsResponse(List<AccountResponseDTO> accounts) {
+    public void setAccountsResponse(List<AccountDTO> accounts) {
         this.accounts = accounts;
     }
 }
