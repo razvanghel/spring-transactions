@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AccountsList from './AccountsList.js';
-import CreateAccountForm from './forms/CreateAccountForm';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [refreshAccounts, setRefreshAccounts] = useState(false);
 
-    const handleAccountCreated = () => {
-        alert('Account created successfully');
-        setRefreshAccounts(!refreshAccounts)
-    };
     const fetchUsers = async () => {
         try {
             const response = await axios.get('/users');
@@ -28,8 +22,6 @@ const UserList = () => {
 
         return (
             <div>
-                <h2>Create Account</h2>
-                <CreateAccountForm onAccountCreated={handleAccountCreated} />
 
                 <h2>Users List</h2>
                 {users.length > 0 ? (
@@ -39,6 +31,7 @@ const UserList = () => {
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Surname</th>
+                                <th>Total balance</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -48,6 +41,7 @@ const UserList = () => {
                                     <td>{user.id}</td>
                                     <td>{user.name}</td>
                                     <td>{user.surname}</td>
+                                    <td>{user.balance}</td>
                                     <td>
                                         <button onClick={() => setSelectedUser(user.id)}>
                                             Show Accounts
@@ -62,7 +56,7 @@ const UserList = () => {
                 )}
                 <p></p>
                 {selectedUser &&
-                     <AccountsList key={refreshAccounts} userId={selectedUser} />
+                     <AccountsList userId={selectedUser} />
                 }
             </div>
         );

@@ -15,4 +15,6 @@ public interface TransactionRepository {
 
     List<TransactionDTO> findByAccountId(Long accountId);
 
+    boolean existsById(Long id);
+
 }

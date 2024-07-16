@@ -1,14 +1,17 @@
 package com.transactionsexample.spring_transactions.repository_impl;
 
+import com.transactionsexample.spring_transactions.Utils;
 import com.transactionsexample.spring_transactions.dto.TransactionDTO;
 import com.transactionsexample.spring_transactions.model.Transaction;
 import com.transactionsexample.spring_transactions.repository.TransactionRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Repository
 public class TransactionRepositoryImpl implements TransactionRepository {
@@ -21,8 +24,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         transaction.setId(transactionDTO.getId());
         transaction.setAccountId(transactionDTO.getAccountId());
         transaction.setAmount(transactionDTO.getAmount());
-        transaction.setTimestamp(transactionDTO.getTimestamp());
-        // Add other fields as needed
+        transaction.setTimestamp(LocalDateTime.now());
         transactions.put(transaction.getId(), transaction);
     }
 
@@ -47,6 +49,11 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     @Override
     public void deleteById(Long id) {
         transactions.remove(id);
+    }
+
+    @Override
+    public boolean existsById(Long id){
+        return transactions.containsKey(id);
     }
 
     @Override

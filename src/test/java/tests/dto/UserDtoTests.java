@@ -1,6 +1,6 @@
 package tests.dto;
 
-import com.transactionsexample.spring_transactions.dto.AccountResponseDTO;
+import com.transactionsexample.spring_transactions.dto.AccountDTO;
 import com.transactionsexample.spring_transactions.dto.UserDTO;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -26,7 +26,7 @@ class UserDtoTests {
         dto.setSurname("Doe");
         dto.setBalance(100.0);
 
-        List<AccountResponseDTO> accounts = List.of(new AccountResponseDTO(1L, 1L, 100.0));
+        List<AccountDTO> accounts = List.of(new AccountDTO(1L, 1L, 100.0));
         dto.setAccountsResponse(accounts);
 
         assertEquals(1L, dto.getId());

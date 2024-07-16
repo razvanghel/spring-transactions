@@ -32,8 +32,7 @@ const DeleteForm = ({ onEntityDeleted }) => {
                 alert(`Failed to delete ${entityType}`);
             }
         } catch (error) {
-            console.error(`Error deleting ${entityType}:`, error);
-            alert(`Failed to delete ${entityType}`);
+            alert(`Failed:  ${error.response.data}`);
         }
     };
 

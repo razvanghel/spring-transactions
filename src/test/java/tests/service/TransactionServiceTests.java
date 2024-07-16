@@ -74,7 +74,13 @@ class TransactionServiceTests {
 
     @Test
     void deleteTransactionById() {
+        // Mock the behavior to return true when checking if the transaction exists
+        when(transactionRepository.existsById(1L)).thenReturn(true);
+
+        // Call the method under test
         transactionService.deleteTransactionById(1L);
+
+        // Verify that deleteById was called
         verify(transactionRepository, times(1)).deleteById(1L);
     }
 

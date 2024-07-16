@@ -1,8 +1,7 @@
 package tests.controller;
 
 import com.transactionsexample.spring_transactions.controller.AccountController;
-import com.transactionsexample.spring_transactions.dto.AccountRequestDTO;
-import com.transactionsexample.spring_transactions.dto.AccountResponseDTO;
+import com.transactionsexample.spring_transactions.dto.AccountDTO;
 import com.transactionsexample.spring_transactions.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,19 +33,19 @@ class AccountControllerTests {
     @MockBean
     private AccountService accountService;
 
-    private AccountResponseDTO accountResponseDTO;
+    private AccountDTO accountDTO;
 
     @BeforeEach
     void setUp() {
-        accountResponseDTO = new AccountResponseDTO();
-        accountResponseDTO.setId(1L);
-        accountResponseDTO.setCustomerId(1L);
-        accountResponseDTO.setBalance(100.0);
+        accountDTO = new AccountDTO();
+        accountDTO.setId(1L);
+        accountDTO.setCustomerId(1L);
+        accountDTO.setBalance(100.0);
     }
 
     @Test
     void createAccount() throws Exception {
-        AccountRequestDTO accountRequestDTO = new AccountRequestDTO();
+        AccountDTO accountRequestDTO = new AccountDTO();
         accountRequestDTO.setCustomerId(1L);
         accountRequestDTO.setBalance(100.0);
 
@@ -54,14 +53,14 @@ class AccountControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"customerId\":1,\"balance\":100.0}")
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
-        verify(accountService, times(1)).createAccount(any(AccountRequestDTO.class));
+        verify(accountService, times(1)).createAccount(any(AccountDTO.class));
     }
 
     @Test
     void getAccountById() throws Exception {
-        when(accountService.getAccountById(1L)).thenReturn(accountResponseDTO);
+        when(accountService.getAccountById(1L)).thenReturn(accountDTO);
 
         mockMvc.perform(get("/accounts/1"))
                 .andExpect(status().isOk())
@@ -72,7 +71,7 @@ class AccountControllerTests {
 
     @Test
     void getAccountsByCustomerId() throws Exception {
-        List<AccountResponseDTO> accounts = Arrays.asList(accountResponseDTO);
+        List<AccountDTO> accounts = Arrays.asList(accountDTO);
         when(accountService.getAccountsByCustomerId(1L)).thenReturn(accounts);
 
         mockMvc.perform(get("/accounts/customer/1"))
@@ -84,7 +83,7 @@ class AccountControllerTests {
 
     @Test
     void getAllAccounts() throws Exception {
-        List<AccountResponseDTO> accounts = Arrays.asList(accountResponseDTO);
+        List<AccountDTO> accounts = Arrays.asList(accountDTO);
         when(accountService.getAllAccounts()).thenReturn(accounts);
 
         mockMvc.perform(get("/accounts"))

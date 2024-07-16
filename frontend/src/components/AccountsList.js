@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import TransactionList from './TransactionList.js';
 import axios from 'axios';
 
-import CreateTransactionForm from './forms/CreateTransactionForm';
 const AccountsList = ({ userId }) => {
     const [accounts, setAccounts] = useState([]);
     const [selectedAccount, setSelectedAccount] = useState(null);
@@ -18,19 +17,12 @@ const AccountsList = ({ userId }) => {
         }
     };
 
-    const handleTransactionCreated = () => {
-        alert('Transaction created successfully');
-        setRefreshTransactions(!refreshTransactions)
-    };
-
     useEffect(() => {
         fetchAccounts(userId);
     }, [userId]);
 
     return (
            <div>
-           <h2>Create transactions</h2>
-               <CreateTransactionForm onTransactionCreated={handleTransactionCreated} />
 
                <h3>Accounts for User ID: {userId}</h3>
                {accounts.length > 0 ? (
@@ -60,7 +52,7 @@ const AccountsList = ({ userId }) => {
                    <p>No accounts found.</p>
                )}
                {selectedAccount &&
-                    <TransactionList key={handleTransactionCreated} accountId={selectedAccount} />
+                    <TransactionList accountId={selectedAccount} />
                }
            </div>
        );
