@@ -1,7 +1,6 @@
 package com.transactionsexample.spring_transactions.controller;
 
-import com.transactionsexample.spring_transactions.dto.AccountRequestDTO;
-import com.transactionsexample.spring_transactions.dto.AccountResponseDTO;
+import com.transactionsexample.spring_transactions.dto.AccountDTO;
 import com.transactionsexample.spring_transactions.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,14 +17,14 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<Void> createAccount(@RequestBody AccountRequestDTO accountRequestDTO) {
-        accountService.createAccount(accountRequestDTO);
+    public ResponseEntity<Void> createAccount(@RequestBody AccountDTO accountDTO) {
+        accountService.createAccount(accountDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponseDTO> getAccountById(@PathVariable Long id) {
-        AccountResponseDTO account = accountService.getAccountById(id);
+    public ResponseEntity<AccountDTO> getAccountById(@PathVariable Long id) {
+        AccountDTO account = accountService.getAccountById(id);
         if (account == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -33,24 +32,20 @@ public class AccountController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<AccountResponseDTO>> getAccountsByCustomerId(@PathVariable Long customerId) {
-        List<AccountResponseDTO> accounts = accountService.getAccountsByCustomerId(customerId);
+    public ResponseEntity<List<AccountDTO>> getAccountsByCustomerId(@PathVariable Long customerId) {
+        List<AccountDTO> accounts = accountService.getAccountsByCustomerId(customerId);
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<AccountResponseDTO>> getAllAccounts() {
-        List<AccountResponseDTO> accounts = accountService.getAllAccounts();
+    public ResponseEntity<List<AccountDTO>> getAllAccounts() {
+        List<AccountDTO> accounts = accountService.getAllAccounts();
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccountById(@PathVariable Long id) {
-        AccountResponseDTO account = accountService.getAccountById(id);
-        if(account == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<String> deleteAccountById(@PathVariable Long id) {
         accountService.deleteAccountById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Account successfully deleted", HttpStatus.OK);
     }
 }
