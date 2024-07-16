@@ -6,7 +6,7 @@ import com.transactionsexample.spring_transactions.dto.AccountDTO;
 import com.transactionsexample.spring_transactions.dto.TransactionDTO;
 import com.transactionsexample.spring_transactions.exceptions.AccountNotFoundException;
 import com.transactionsexample.spring_transactions.exceptions.InvalidBalanceException;
-import com.transactionsexample.spring_transactions.repository_impl.AccountRepositoryImpl;
+import com.transactionsexample.spring_transactions.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class AccountService {
 
     @Autowired
-    private AccountRepositoryImpl accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
     private TransactionService transactionService;
